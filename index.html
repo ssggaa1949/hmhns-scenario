@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>作业4 · 运行场景分层与风险分析 — 机器增强的人机混合神经系统</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap">
+<style>
+  :root{
+    --bg:#F5F2EC;--paper:#FFFFFF;--ink:#222A26;--ink2:#4A524D;--muted:#6E6A5E;--line:#E5DFD2;
+    --green:#2F5D50;--green-soft:#E9F0ED;--ochre:#9A6B2F;--ochre-soft:#F5ECDD;
+    --navy:#33506B;--navy-soft:#EAEFF3;--red:#A8443A;--red-soft:#F7E9E7;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:"Noto Sans SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.75;-webkit-font-smoothing:antialiased}
+  .hero{padding:76px 24px 54px;text-align:center;background:var(--bg);border-bottom:1px solid var(--line)}
+  .tag{display:inline-block;padding:6px 16px;border:1px solid var(--line);border-radius:999px;color:var(--green);font-size:12px;letter-spacing:.24em;margin-bottom:24px;background:var(--paper)}
+  h1{font-family:"Noto Serif SC",serif;font-size:clamp(26px,4.4vw,40px);font-weight:700;letter-spacing:.02em;color:var(--ink);line-height:1.32}
+  .subtitle{color:var(--muted);max-width:820px;margin:16px auto 0;font-size:15px}
+  .meta{margin-top:24px;color:var(--muted);font-size:13px}
+  .meta b{color:var(--green);font-weight:600}
+  nav{position:sticky;top:0;z-index:50;background:rgba(245,242,236,.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);display:flex;flex-wrap:wrap;justify-content:center;gap:4px;padding:10px 12px}
+  nav a{color:var(--ink2);text-decoration:none;font-size:13.5px;padding:6px 12px;border-radius:6px;transition:.2s}
+  nav a:hover{color:var(--green);background:var(--green-soft)}
+  .wrap{max-width:1060px;margin:0 auto;padding:46px 22px}
+  section{margin-bottom:54px}
+  .sec-head{display:flex;align-items:center;gap:16px;margin-bottom:22px}
+  .sec-num{flex:none;width:44px;height:44px;border-radius:12px;display:grid;place-items:center;background:var(--green-soft);color:var(--green);border:1px solid var(--line);font-family:"Noto Serif SC",serif;font-weight:700;font-size:17px}
+  .sec-head h2{font-family:"Noto Serif SC",serif;font-size:23px;font-weight:700;color:var(--ink)}
+  .sec-head small{display:block;color:var(--muted);font-size:13px;font-weight:400;margin-top:2px}
+  .card{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:22px 24px;margin-bottom:18px;box-shadow:0 1px 2px rgba(34,42,38,.05)}
+  .card h3{font-size:16px;color:var(--green);margin-bottom:12px;font-weight:700;border-left:3px solid var(--green);padding-left:11px}
+  .card h4{font-size:14.5px;color:var(--ink);margin:15px 0 8px;font-weight:600}
+  .card p{color:var(--ink2);margin-bottom:10px;font-size:14.5px}
+  .card ul,.card ol{margin:8px 0 8px 22px;color:var(--ink2);font-size:14.5px}
+  .card li{margin-bottom:6px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  @media(max-width:900px){.grid4{grid-template-columns:1fr 1fr}.grid2{grid-template-columns:1fr}}
+  @media(max-width:560px){.grid4{grid-template-columns:1fr}}
+  .layer{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:18px 18px 16px;box-shadow:0 1px 2px rgba(34,42,38,.05)}
+  .layer .ltag{display:inline-block;font-family:Consolas,monospace;font-size:12px;color:var(--ochre);letter-spacing:.08em;margin-bottom:6px}
+  .layer h3{font-size:15.5px;color:var(--ink);margin-bottom:6px;font-weight:700}
+  .layer p{font-size:13.5px;color:var(--muted)}
+  .layer .where{margin-top:8px;font-size:12.5px;color:var(--navy)}
+  table{width:100%;border-collapse:collapse;font-size:13.5px;margin:10px 0}
+  th,td{border:1px solid var(--line);padding:9px 11px;text-align:left;vertical-align:top}
+  th{background:#F1EEE5;color:var(--green);font-weight:600}
+  tr:nth-child(even) td{background:#FBFAF6}
+  td code{color:var(--navy);font-size:12.5px}
+  .badge{display:inline-block;padding:2px 10px;border-radius:6px;font-size:12px;background:var(--green-soft);color:var(--green);border:1px solid var(--line)}
+  .badge.warn{background:var(--ochre-soft);color:var(--ochre);border-color:var(--line)}
+  .badge.red{background:var(--red-soft);color:var(--red);border-color:var(--line)}
+  .step{display:flex;gap:10px;padding:10px 0;border-bottom:1px dashed var(--line)}
+  .step:last-child{border-bottom:none}
+  .step .sn{flex:none;width:26px;height:26px;border-radius:8px;background:var(--green-soft);color:var(--green);display:grid;place-items:center;font-size:12.5px;font-weight:700}
+  .step .st{font-size:14px;color:var(--ink2)}
+  .step .st b{color:var(--ink)}
+  .note{font-size:13px;color:var(--muted);margin-top:10px}
+  footer{border-top:1px solid var(--line);padding:28px 22px;text-align:center;color:var(--muted);font-size:13px}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <span class="tag">OPERATIONAL SCENARIOS · CONDITIONS · RISK LIST</span>
+  <h1>机器增强的人机混合神经系统<br>运行场景分层与安全风险分析</h1>
+  <p class="subtitle">
+    Machine-Augmented Human-Machine Hybrid Nervous System（MA-HMHNS）<br>
+    按环境分层、梳理要素、定出运行条件，选一个典型场景讲透，再做安全风险分析、形成风险场景列表。
+  </p>
+  <div class="meta">
+    依据 <b>运行场景 / 运行设计条件</b> 分析方法 · 承接作业 1–3 的层级、需求、架构与 STPA 结论 · 复杂系统工程 2026 · 小组作业 4
+  </div>
+</header>
+
+<nav>
+  <a href="#layers">场景分层</a>
+  <a href="#elements">场景要素</a>
+  <a href="#conditions">运行设计条件</a>
+  <a href="#typical">典型场景</a>
+  <a href="#risk">风险场景列表</a>
+  <a href="#trace">前后衔接</a>
+</nav>
+
+<div class="wrap">
+
+<!-- ============ 1 场景分层 ============ -->
+<section id="layers">
+  <div class="sec-head">
+    <div class="sec-num">1</div>
+    <div><h2>场景分层</h2><small>Scenario layering · 按“在哪儿用、谁在场、自主程度”归类</small></div>
+  </div>
+  <div class="card">
+    <p>同一套系统不会只在一种环境里使用。把使用情形按<strong>地点环境、参与人员、系统自主程度</strong>分成四层，后面分别规定每层的条件和风险，避免“一套条件套所有场景”。</p>
+  </div>
+  <div class="grid4">
+    <div class="layer">
+      <span class="ltag">A · 临床医疗层</span>
+      <h3>监督最强的医疗环境</h3>
+      <p>手术室、康复训练室。有医师、治疗师在场，系统以调试和康复训练为主，参数由专业人员掌握。</p>
+      <div class="where">典型场景：植入 / 开机调试、闭环康复训练</div>
+    </div>
+    <div class="layer">
+      <span class="ltag">B · 居家日常层</span>
+      <h3>佩戴者独立使用</h3>
+      <p>家庭客厅、卧室。患者或增强用户独立完成生活动作，家属可旁观，系统处于自主使用状态，远程随访兜底。</p>
+      <div class="where">典型场景：穿衣、取物、日常移动</div>
+    </div>
+    <div class="layer">
+      <span class="ltag">C · 现场协同层</span>
+      <h3>任务导向的人机协同</h3>
+      <p>控制室或作业现场。操作员就地或远程操控机械臂、外骨骼，替代人进入噪声、辐射等危险环境完成作业。</p>
+      <div class="where">典型场景：远程巡检、危险环境替代作业</div>
+    </div>
+    <div class="layer">
+      <span class="ltag">D · 应急兜底层</span>
+      <h3>跨环境的安全状态</h3>
+      <p>不专属于某个地点。任何一层出现异常时，系统转入待机、降级或紧急断开，任务暂停，只保证人身与设备安全。</p>
+      <div class="where">典型场景：故障保护、急断、状态保持</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 2 场景要素 ============ -->
+<section id="elements">
+  <div class="sec-head">
+    <div class="sec-num">2</div>
+    <div><h2>各层场景要素</h2><small>Scenario elements · 地点、人员、输入、输出与目标</small></div>
+  </div>
+  <div class="card">
+    <table>
+      <tr>
+        <th style="width:120px">场景层</th><th>典型地点</th><th>参与人员</th><th>系统模式</th><th>主要输入</th><th>主要输出</th><th>场景目标</th>
+      </tr>
+      <tr>
+        <td><b>A 临床医疗</b></td><td>手术室、康复训练室</td><td>患者、医师、治疗师</td><td>校准 / 康复训练</td><td>残存神经信号、治疗师参数调整</td><td>辅助动作、刺激反馈、训练数据</td><td>完成评定与康复训练</td>
+      </tr>
+      <tr>
+        <td><b>B 居家日常</b></td><td>家庭室内</td><td>佩戴者、家属（旁观）</td><td>自主增强 / 待机</td><td>日常动作意图</td><td>生活动作、感觉反馈</td><td>独立生活、维持能力</td>
+      </tr>
+      <tr>
+        <td><b>C 现场协同</b></td><td>控制室、作业现场</td><td>操作员、监督员</td><td>作业协同</td><td>操作意图、环境遥测</td><td>远端机械动作、力觉反馈</td><td>替代人进入危险环境完成作业</td>
+      </tr>
+      <tr>
+        <td><b>D 应急兜底</b></td><td>任意环境</td><td>佩戴者、安全监控</td><td>安全待机 / 降级 / 急断</td><td>异常信号、急断指令</td><td>保持安全姿态、告警、日志</td><td>避免伤害与失控</td>
+      </tr>
+    </table>
+    <p class="note">要素说明：输入是系统“收到什么”（神经信号、人的指令、环境测量）；输出是系统“给出什么”（动作、反馈、数据）。每层把这些要素对齐，才能判断运行条件是否满足。</p>
+  </div>
+</section>
+
+<!-- ============ 3 运行设计条件 ============ -->
+<section id="conditions">
+  <div class="sec-head">
+    <div class="sec-num">3</div>
+    <div><h2>运行设计条件</h2><small>Operational design conditions · 范围、系统状态、人员状态</small></div>
+  </div>
+
+  <div class="card">
+    <h3>3.1 运行设计范围</h3>
+    <p>系统被允许正常工作的边界；超出边界应降级或暂停，不硬撑运行。</p>
+    <table>
+      <tr><th style="width:130px">条件类别</th><th>允许范围</th><th>通俗说明</th></tr>
+      <tr><td>环境温度</td><td>体表 / 穿戴段 10–35 ℃；植入段按体温区间</td><td>过冷过热都可能影响电极与佩戴者感受，超出即提示停用</td></tr>
+      <tr><td>湿度</td><td>相对湿度 30%–75%，无凝露</td><td>潮湿会影响电极接触与电气安全</td></tr>
+      <tr><td>电磁环境</td><td>日常民用电磁环境；强干扰下进入降级</td><td>强电磁干扰可能让信号失真，此时只保留保守功能</td></tr>
+      <tr><td>姿态与动作</td><td>坐姿、站姿及限定动作范围内；跌倒、剧烈晃动触发保护</td><td>动作不在预期姿态内时，先保持姿态再判断</td></tr>
+      <tr><td>任务与负荷</td><td>单次训练 / 作业不超过设定时长；动作幅度、力矩按个体限位</td><td>防止过度疲劳和超关节范围用力</td></tr>
+      <tr><td>网络条件</td><td>本地闭环不依赖联网；云端同步仅在联网时进行</td><td>断网时本地闭环照常工作，数据稍后再同步</td></tr>
+      <tr><td>佩戴时长</td><td>单次连续使用 ≤ 2 h；康复训练按疗程上限</td><td>超时提醒休息，避免长时间佩戴不适</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>3.2 系统状态</h3>
+    <p>系统任一时刻处于一种工作状态，状态按条件切换；下表列出各状态的含义与进出条件。</p>
+    <table>
+      <tr><th style="width:120px">系统状态</th><th>白话含义</th><th>进入条件</th><th>转出条件</th></tr>
+      <tr><td><b>自检</b></td><td>上电后逐项检查电极、电池、传感器和链路</td><td>开机</td><td>通过 → 校准；异常 → 待机并告警</td></tr>
+      <tr><td><b>校准</b></td><td>采集基线信号，标定意图映射和个人限位</td><td>自检通过、佩戴者配合</td><td>标定完成 → 康复 / 增强；失败 → 重试或待机</td></tr>
+      <tr><td><b>康复训练</b></td><td>治疗师在场监督下辅助训练</td><td>治疗师在岗、患者状态达标</td><td>训练结束 → 待机；异常 → 降级 / 急断</td></tr>
+      <tr><td><b>自主增强</b></td><td>佩戴者独立使用，系统跟随意图动作</td><td>标定完成、经监督者授权</td><td>出现风险 → 待机；结束 → 待机</td></tr>
+      <tr><td><b>安全待机</b></td><td>低功耗监测，保持当前安全姿态，不主动输出动作</td><td>任何异常或主动暂停</td><td>条件恢复并确认后回到对应模式</td></tr>
+      <tr><td><b>紧急断开</b></td><td>切断机器通路，回到原生神经状态</td><td>按下急断按钮或出现严重风险</td><td>需人工复位后重新自检</td></tr>
+      <tr><td><b>故障降级</b></td><td>部分功能受限运行，如减弱助力、只保留反馈</td><td>单点故障但尚未失控</td><td>故障排除后恢复正常状态</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>3.3 人员状态</h3>
+    <p>系统能不能进入某个模式，不只看设备，还要看人的状态是否满足前提。</p>
+    <ul>
+      <li><b>佩戴者：</b>意识清醒、能配合指令；没有明显疲劳、疼痛或眩晕；肢体残存能力符合当前模式要求；知情同意有效。状态下降时，不进入高自主模式。</li>
+      <li><b>治疗师 / 监督员：</b>在岗且具备相应资质；能看到解码置信度与告警；拥有模式切换和参数调整权限。离岗时，系统不得停留在无人监督的高助力模式。</li>
+      <li><b>运维人员：</b>设备巡检、校准、算法更新由授权人员执行；普通佩戴者不接触底层参数。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ 4 典型场景 ============ -->
+<section id="typical">
+  <div class="sec-head">
+    <div class="sec-num">4</div>
+    <div><h2>典型场景详述</h2><small>Selected scenario · 卒中后上肢闭环康复（康复训练室）</small></div>
+  </div>
+
+  <div class="card">
+    <h3>场景档案</h3>
+    <div class="grid2">
+      <ul>
+        <li><b>人物：</b>62 岁卒中后左侧上肢偏瘫患者，Fugl-Meyer 评分 28 分；康复治疗师在场。</li>
+        <li><b>地点：</b>医院康复科训练室，安静、照明充足，座椅与辅具齐全。</li>
+      </ul>
+      <ul>
+        <li><b>目标：</b>完成一次闭环训练，改善上肢抓握能力，记录训练数据，过程中不造成二次伤害。</li>
+        <li><b>对应条件：</b>处于康复训练模式；佩戴者状态达标；治疗师在岗；各项参数在运行设计范围内。</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>训练过程（按时间顺序）</h3>
+    <div class="step"><div class="sn">1</div><div class="st"><b>准备与自检：</b>患者落座，上肢佩戴表面肌电 + 惯性单元，肘关节处接电刺激反馈。系统上电自检电极阻抗、电量、传感器与链路，通过后进入校准。</div></div>
+    <div class="step"><div class="sn">2</div><div class="st"><b>基线校准：</b>患者按指令做几次小幅动作，系统采集残存肌电，标定意图映射和个人关节限位；治疗师确认参数后再开始训练。</div></div>
+    <div class="step"><div class="sn">3</div><div class="st"><b>闭环训练：</b>患者试图抓握水杯 → 系统采集残存肌电 → 解码出“伸手抓握”意图和置信度 → 外骨骼辅助抬手 → 指尖压力传感器把接触感回传，让患者“感觉”到杯子。</div></div>
+    <div class="step"><div class="sn">4</div><div class="st"><b>监督调整：</b>治疗师看到置信度 0.82，适当减小助力，让患者多发力；若患者出现疲劳或疼痛上升，就降载或暂停。</div></div>
+    <div class="step"><div class="sn">5</div><div class="st"><b>收尾归档：</b>训练结束系统回到安全待机，生成本次训练曲线与评分；数据脱敏后同步云端，设备由治疗师复位。</div></div>
+  </div>
+
+  <div class="card">
+    <h3>本场景的条件对照</h3>
+    <table>
+      <tr><th style="width:150px">条件维度</th><th>本场景满足情况</th></tr>
+      <tr><td>运行设计范围</td><td>训练室温湿度日常水平；单次训练在时长上限内；动作幅度与力矩按患者个人限位执行。</td></tr>
+      <tr><td>系统状态</td><td>自检 → 校准 → 康复训练 → 安全待机，状态切换均有对应条件确认。</td></tr>
+      <tr><td>人员状态</td><td>患者清醒、能配合；治疗师在岗并掌握参数与模式权限。</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- ============ 5 风险列表 ============ -->
+<section id="risk">
+  <div class="sec-head">
+    <div class="sec-num">5</div>
+    <div><h2>典型场景安全风险分析</h2><small>Risk scenario list · 诱因、后果、等级与处置</small></div>
+  </div>
+  <div class="card">
+    <p>针对上面的康复场景，逐项考虑“什么情况下可能出问题”，形成风险场景列表。处置措施承接作业 3 已派生的安全需求（SAF-REQ），保证前后一致。</p>
+    <table>
+      <tr>
+        <th style="width:80px">编号</th><th>风险场景</th><th>诱因</th><th>可能后果</th><th style="width:70px">等级</th><th>处置与对应安全需求</th>
+      </tr>
+      <tr>
+        <td><code>RSK-01</code></td><td>信号受出汗、伪迹干扰，低置信度时仍驱动动作</td><td>电极出汗、肌电混杂</td><td>误动作、拉伤</td><td><span class="badge red">高</span></td><td>置信度 &lt; 0.6 时禁止使能执行器（SAF-REQ-01）</td>
+      </tr>
+      <tr>
+        <td><code>RSK-02</code></td><td>助力超过肘关节活动限位</td><td>未绑定个人限位、不同患者参数混用</td><td>关节拉伤</td><td><span class="badge red">高</span></td><td>动作范围按个体限位硬约束，超限自动限幅（SAF-REQ-02）</td>
+      </tr>
+      <tr>
+        <td><code>RSK-03</code></td><td>电刺激幅度或脉宽超限</td><td>刺激参数误调</td><td>皮肤刺痛、神经不适</td><td><span class="badge warn">中</span></td><td>刺激参数设硬件级上限，超限自动切断（SAF-REQ-04）</td>
+      </tr>
+      <tr>
+        <td><code>RSK-04</code></td><td>治疗师短暂离岗，系统仍保持高助力</td><td>模式切换缺少确认环节</td><td>无人监督下误动作</td><td><span class="badge warn">中</span></td><td>离岗 / 模式切换须治疗师确认并记录（SAF-REQ-05）</td>
+      </tr>
+      <tr>
+        <td><code>RSK-05</code></td><td>电极脱落或信号中断未被识别</td><td>电极松动、导联断线</td><td>误判意图</td><td><span class="badge warn">中</span></td><td>阻抗与断线监测，异常进入安全待机（SAF-REQ-03）</td>
+      </tr>
+      <tr>
+        <td><code>RSK-06</code></td><td>患者疲劳、疼痛上升仍继续训练</td><td>主观状态未纳入判断</td><td>二次伤害</td><td><span class="badge warn">中</span></td><td>疲劳 / 疼痛输入触发降载或暂停；告警双通道提醒（SAF-REQ-08）</td>
+      </tr>
+      <tr>
+        <td><code>RSK-07</code></td><td>训练原始数据被直接上传</td><td>本地脱敏失效</td><td>隐私泄露</td><td><span class="badge warn">中</span></td><td>原始数据不出本地，云端仅接收脱敏特征（SAF-REQ-06）</td>
+      </tr>
+      <tr>
+        <td><code>RSK-08</code></td><td>训练中断电，外骨骼突然失去支撑</td><td>执行器依赖持续通电保持姿态</td><td>肢体失支撑、部件坠落</td><td><span class="badge warn">中</span></td><td>断电时机械抱闸，锁止在安全姿态（SAF-REQ-07）</td>
+      </tr>
+    </table>
+    <p class="note">等级说明：<b>高</b>表示可能造成身体伤害，需硬件级防护；<b>中</b>表示可能造成不适或流程风险，靠监测、降级与流程确认控制。</p>
+  </div>
+</section>
+
+<!-- ============ 6 衔接 ============ -->
+<section id="trace">
+  <div class="sec-head">
+    <div class="sec-num">6</div>
+    <div><h2>与前序作业的衔接</h2><small>Traceability · 四次作业的递进关系</small></div>
+  </div>
+  <div class="card">
+    <table>
+      <tr><th style="width:150px">前序作业</th><th>已确定的内容</th><th>本页如何沿用</th></tr>
+      <tr><td>作业 1 · 层级分解</td><td>任务—体系—整机—系统—子系统—模块的六级结构</td><td>场景要素中的设备与人员，对应分解出的子系统和相关方</td></tr>
+      <tr><td>作业 2 · BRS / StRS</td><td>业务需求、运行概念、相关方矩阵与 15 条可追溯需求</td><td>四层场景与 S1–S3 典型场景直接沿用，未另起设定</td></tr>
+      <tr><td>作业 3 · SyRS / 架构 / STPA</td><td>系统需求、初始架构、UCA 与 SAF-REQ 安全需求</td><td>风险列表的处置措施逐条挂接到对应 SAF-REQ</td></tr>
+      <tr><td><b>作业 4 · 本页</b></td><td>场景分层、场景要素、运行设计条件、典型场景与风险列表</td><td>为后续详细设计和现场试用提供场景与边界依据</td></tr>
+    </table>
+  </div>
+</section>
+
+</div>
+
+<footer>
+  <p>机器增强的人机混合神经系统 · 作业 4：运行场景分层 · 场景要素 · 运行设计条件 · 典型场景 · 风险场景列表</p>
+  <p style="margin-top:6px">复杂系统工程 2026 · 小组作业 4</p>
+</footer>
+
+</body>
+</html>
