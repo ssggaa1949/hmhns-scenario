@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>作业4 · 运行场景分层与风险分析 — 机器增强的人机混合神经系统</title>
+<title>作业4 · 场景分层与风险分析 — 机器增强的人机混合神经系统</title>
 <link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap">
 <style>
   :root{
@@ -64,11 +64,11 @@
 <body>
 
 <header class="hero">
-  <span class="tag">OPERATIONAL SCENARIOS · CONDITIONS · RISK LIST</span>
-  <h1>机器增强的人机混合神经系统<br>运行场景分层与安全风险分析</h1>
+  <span class="tag">SCENARIO LAYERS · CONDITIONS · RISK LIST</span>
+  <h1>机器增强的人机混合神经系统<br>场景分层与安全风险分析</h1>
   <p class="subtitle">
     Machine-Augmented Human-Machine Hybrid Nervous System（MA-HMHNS）<br>
-    按环境分层、梳理要素、定出运行条件，选一个典型场景讲透，再做安全风险分析、形成风险场景列表。
+    按系统工程抽象层级把场景分为使命、系统、子系统、组件四层，梳理各层要素与运行条件，选一个典型场景讲透，再做安全风险分析、形成风险场景列表。
   </p>
   <div class="meta">
     依据 <b>运行场景 / 运行设计条件</b> 分析方法 · 承接作业 1–3 的层级、需求、架构与 STPA 结论 · 复杂系统工程 2026 · 小组作业 4
@@ -90,35 +90,35 @@
 <section id="layers">
   <div class="sec-head">
     <div class="sec-num">1</div>
-    <div><h2>场景分层</h2><small>Scenario layering · 按“在哪儿用、谁在场、自主程度”归类</small></div>
+    <div><h2>场景分层</h2><small>Scenario layering · 按抽象层级：使命 → 系统 → 子系统 → 组件</small></div>
   </div>
   <div class="card">
-    <p>同一套系统不会只在一种环境里使用。把使用情形按<strong>地点环境、参与人员、系统自主程度</strong>分成四层，后面分别规定每层的条件和风险，避免“一套条件套所有场景”。</p>
+    <p>同一套系统在不同抽象层级上看到的场景不一样。自上而下分四层：顶层回答“要完成什么任务”，往下逐层打开系统内部；每层场景对应一层需求，避免把使命目标和组件信号混在一起谈。</p>
   </div>
   <div class="grid4">
     <div class="layer">
-      <span class="ltag">A · 临床医疗层</span>
-      <h3>监督最强的医疗环境</h3>
-      <p>手术室、康复训练室。有医师、治疗师在场，系统以调试和康复训练为主，参数由专业人员掌握。</p>
-      <div class="where">典型场景：植入 / 开机调试、闭环康复训练</div>
+      <span class="ltag">OP · 使命场景层</span>
+      <h3>使命与相关方视角（顶层）</h3>
+      <p>不看系统内部，只看利益相关方、外部环境和使命目标；参与者是人、外部组织与环境，描述“要达成什么任务”。</p>
+      <div class="where">典型：一个疗程的上肢康复、居家独立生活、一次危险环境巡检作业</div>
     </div>
     <div class="layer">
-      <span class="ltag">B · 居家日常层</span>
-      <h3>佩戴者独立使用</h3>
-      <p>家庭客厅、卧室。患者或增强用户独立完成生活动作，家属可旁观，系统处于自主使用状态，远程随访兜底。</p>
-      <div class="where">典型场景：穿衣、取物、日常移动</div>
+      <span class="ltag">SYS · 系统场景层</span>
+      <h3>整机黑盒对外行为</h3>
+      <p>把完整系统当作黑盒，描述系统对外的交互和系统级行为，不展开内部结构。</p>
+      <div class="where">典型：闭环康复训练、自主增强使用、远程协同作业、故障安全模式</div>
     </div>
     <div class="layer">
-      <span class="ltag">C · 现场协同层</span>
-      <h3>任务导向的人机协同</h3>
-      <p>控制室或作业现场。操作员就地或远程操控机械臂、外骨骼，替代人进入噪声、辐射等危险环境完成作业。</p>
-      <div class="where">典型场景：远程巡检、危险环境替代作业</div>
+      <span class="ltag">SUB · 子系统场景层</span>
+      <h3>子系统之间的交互</h3>
+      <p>把系统拆成若干子系统，描述子系统之间、子系统与外部之间的信号与控制交互。</p>
+      <div class="where">典型：采集子系统把信号交解码子系统，解码结果驱动运动子系统，安全子系统监控介入</div>
     </div>
     <div class="layer">
-      <span class="ltag">D · 应急兜底层</span>
-      <h3>跨环境的安全状态</h3>
-      <p>不专属于某个地点。任何一层出现异常时，系统转入待机、降级或紧急断开，任务暂停，只保证人身与设备安全。</p>
-      <div class="where">典型场景：故障保护、急断、状态保持</div>
+      <span class="ltag">COMP · 组件场景层</span>
+      <h3>软硬件组件内部行为（底层）</h3>
+      <p>最细一层，描述零部件、软硬件组件内部的行为与信号交互。</p>
+      <div class="where">典型：电极采样、滤波与模数转换、特征计算、刺激波形生成、电机抱闸、电量监测</div>
     </div>
   </div>
 </section>
@@ -127,27 +127,27 @@
 <section id="elements">
   <div class="sec-head">
     <div class="sec-num">2</div>
-    <div><h2>各层场景要素</h2><small>Scenario elements · 地点、人员、输入、输出与目标</small></div>
+    <div><h2>各层场景要素</h2><small>Scenario elements · 视角、相关方、输入、输出、典型场景与产出需求</small></div>
   </div>
   <div class="card">
     <table>
       <tr>
-        <th style="width:120px">场景层</th><th>典型地点</th><th>参与人员</th><th>系统模式</th><th>主要输入</th><th>主要输出</th><th>场景目标</th>
+        <th style="width:120px">场景层</th><th>观察视角</th><th>参与者 / 相关方</th><th>主要输入</th><th>主要输出</th><th>典型场景</th><th>产出需求</th>
       </tr>
       <tr>
-        <td><b>A 临床医疗</b></td><td>手术室、康复训练室</td><td>患者、医师、治疗师</td><td>校准 / 康复训练</td><td>残存神经信号、治疗师参数调整</td><td>辅助动作、刺激反馈、训练数据</td><td>完成评定与康复训练</td>
+        <td><b>OP 使命层</b></td><td>系统之外的使命与环境</td><td>患者 / 佩戴者、医师治疗师、家属、医院与机构、运维方、监管</td><td>康复目标、生活自理需求、作业任务与外部环境条件</td><td>任务成效、生活能力改善、作业结果与社会价值</td><td>一疗程上肢康复；居家独立生活；危险环境替代作业</td><td>用户 / 相关方需求</td>
       </tr>
       <tr>
-        <td><b>B 居家日常</b></td><td>家庭室内</td><td>佩戴者、家属（旁观）</td><td>自主增强 / 待机</td><td>日常动作意图</td><td>生活动作、感觉反馈</td><td>独立生活、维持能力</td>
+        <td><b>SYS 系统层</b></td><td>整机作为黑盒</td><td>佩戴者、监督者、远端操作员</td><td>人的意图、残存神经信号、环境遥测、监督指令</td><td>辅助动作、感觉反馈、训练数据、告警与状态</td><td>闭环康复训练；自主增强；远程协同；故障安全模式</td><td>系统级功能需求</td>
       </tr>
       <tr>
-        <td><b>C 现场协同</b></td><td>控制室、作业现场</td><td>操作员、监督员</td><td>作业协同</td><td>操作意图、环境遥测</td><td>远端机械动作、力觉反馈</td><td>替代人进入危险环境完成作业</td>
+        <td><b>SUB 子系统层</b></td><td>子系统之间的接口与流程</td><td>采集、解码、运动驱动、反馈、电源、通信、安全各子系统</td><td>子系统间传递的信号、特征、指令、状态量</td><td>驱动输出、反馈信号、监测结论、保护动作</td><td>采集→解码→驱动→反馈链路；安全子系统全程监控介入</td><td>子系统需求</td>
       </tr>
       <tr>
-        <td><b>D 应急兜底</b></td><td>任意环境</td><td>佩戴者、安全监控</td><td>安全待机 / 降级 / 急断</td><td>异常信号、急断指令</td><td>保持安全姿态、告警、日志</td><td>避免伤害与失控</td>
+        <td><b>COMP 组件层</b></td><td>组件内部的信号与算法</td><td>电极、放大滤波、ADC、算法模块、驱动电路、执行部件</td><td>原始生理电信号、采样数据、控制电平</td><td>数字化波形、特征值、刺激脉冲、力矩 / 抱闸动作</td><td>电极采样与阻抗检测；滤波 ADC；波形生成；断电抱闸</td><td>组件 / 软件需求</td>
       </tr>
     </table>
-    <p class="note">要素说明：输入是系统“收到什么”（神经信号、人的指令、环境测量）；输出是系统“给出什么”（动作、反馈、数据）。每层把这些要素对齐，才能判断运行条件是否满足。</p>
+    <p class="note">要素说明：输入是该层“收到什么”，输出是“给出什么”。逐层把要素对齐，才能判断运行条件是否满足、需求落在哪一层。</p>
   </div>
 </section>
 
@@ -203,19 +203,19 @@
 <section id="typical">
   <div class="sec-head">
     <div class="sec-num">4</div>
-    <div><h2>典型场景详述</h2><small>Selected scenario · 卒中后上肢闭环康复（康复训练室）</small></div>
+    <div><h2>典型场景详述</h2><small>Selected scenario · 系统场景层：卒中后上肢闭环康复（康复训练室）</small></div>
   </div>
 
   <div class="card">
     <h3>场景档案</h3>
     <div class="grid2">
       <ul>
+        <li><b>归属层级：</b>使命层目标为“改善上肢抓握能力、回归日常”；本场景落在系统层，以整机黑盒视角描述一次闭环康复训练。</li>
         <li><b>人物：</b>62 岁卒中后左侧上肢偏瘫患者，Fugl-Meyer 评分 28 分；康复治疗师在场。</li>
-        <li><b>地点：</b>医院康复科训练室，安静、照明充足，座椅与辅具齐全。</li>
       </ul>
       <ul>
-        <li><b>目标：</b>完成一次闭环训练，改善上肢抓握能力，记录训练数据，过程中不造成二次伤害。</li>
-        <li><b>对应条件：</b>处于康复训练模式；佩戴者状态达标；治疗师在岗；各项参数在运行设计范围内。</li>
+        <li><b>地点：</b>医院康复科训练室，安静、照明充足，座椅与辅具齐全。</li>
+        <li><b>目标与条件：</b>完成一次闭环训练、记录数据且不造成二次伤害；处于康复训练模式，佩戴者状态达标、治疗师在岗，参数在运行设计范围内。</li>
       </ul>
     </div>
   </div>
@@ -244,37 +244,37 @@
 <section id="risk">
   <div class="sec-head">
     <div class="sec-num">5</div>
-    <div><h2>典型场景安全风险分析</h2><small>Risk scenario list · 诱因、后果、等级与处置</small></div>
+    <div><h2>典型场景安全风险分析</h2><small>Risk scenario list · 诱因、后果、涉及层级、等级与处置</small></div>
   </div>
   <div class="card">
-    <p>针对上面的康复场景，逐项考虑“什么情况下可能出问题”，形成风险场景列表。处置措施承接作业 3 已派生的安全需求（SAF-REQ），保证前后一致。</p>
+    <p>针对上面的康复场景，逐项考虑“什么情况下可能出问题”，形成风险场景列表，并标注主要涉及的层级；处置措施承接作业 3 已派生的安全需求（SAF-REQ），保证前后一致。</p>
     <table>
       <tr>
-        <th style="width:80px">编号</th><th>风险场景</th><th>诱因</th><th>可能后果</th><th style="width:70px">等级</th><th>处置与对应安全需求</th>
+        <th style="width:80px">编号</th><th>风险场景</th><th>诱因</th><th>可能后果</th><th style="width:80px">涉及层级</th><th style="width:64px">等级</th><th>处置与对应安全需求</th>
       </tr>
       <tr>
-        <td><code>RSK-01</code></td><td>信号受出汗、伪迹干扰，低置信度时仍驱动动作</td><td>电极出汗、肌电混杂</td><td>误动作、拉伤</td><td><span class="badge red">高</span></td><td>置信度 &lt; 0.6 时禁止使能执行器（SAF-REQ-01）</td>
+        <td><code>RSK-01</code></td><td>信号受出汗、伪迹干扰，低置信度时仍驱动动作</td><td>电极出汗、肌电混杂</td><td>误动作、拉伤</td><td>子系统 / 组件</td><td><span class="badge red">高</span></td><td>置信度 &lt; 0.6 时禁止使能执行器（SAF-REQ-01）</td>
       </tr>
       <tr>
-        <td><code>RSK-02</code></td><td>助力超过肘关节活动限位</td><td>未绑定个人限位、不同患者参数混用</td><td>关节拉伤</td><td><span class="badge red">高</span></td><td>动作范围按个体限位硬约束，超限自动限幅（SAF-REQ-02）</td>
+        <td><code>RSK-02</code></td><td>助力超过肘关节活动限位</td><td>未绑定个人限位、不同患者参数混用</td><td>关节拉伤</td><td>系统 / 子系统</td><td><span class="badge red">高</span></td><td>动作范围按个体限位硬约束，超限自动限幅（SAF-REQ-02）</td>
       </tr>
       <tr>
-        <td><code>RSK-03</code></td><td>电刺激幅度或脉宽超限</td><td>刺激参数误调</td><td>皮肤刺痛、神经不适</td><td><span class="badge warn">中</span></td><td>刺激参数设硬件级上限，超限自动切断（SAF-REQ-04）</td>
+        <td><code>RSK-03</code></td><td>电刺激幅度或脉宽超限</td><td>刺激参数误调</td><td>皮肤刺痛、神经不适</td><td>组件</td><td><span class="badge warn">中</span></td><td>刺激参数设硬件级上限，超限自动切断（SAF-REQ-04）</td>
       </tr>
       <tr>
-        <td><code>RSK-04</code></td><td>治疗师短暂离岗，系统仍保持高助力</td><td>模式切换缺少确认环节</td><td>无人监督下误动作</td><td><span class="badge warn">中</span></td><td>离岗 / 模式切换须治疗师确认并记录（SAF-REQ-05）</td>
+        <td><code>RSK-04</code></td><td>治疗师短暂离岗，系统仍保持高助力</td><td>模式切换缺少确认环节</td><td>无人监督下误动作</td><td>系统</td><td><span class="badge warn">中</span></td><td>离岗 / 模式切换须治疗师确认并记录（SAF-REQ-05）</td>
       </tr>
       <tr>
-        <td><code>RSK-05</code></td><td>电极脱落或信号中断未被识别</td><td>电极松动、导联断线</td><td>误判意图</td><td><span class="badge warn">中</span></td><td>阻抗与断线监测，异常进入安全待机（SAF-REQ-03）</td>
+        <td><code>RSK-05</code></td><td>电极脱落或信号中断未被识别</td><td>电极松动、导联断线</td><td>误判意图</td><td>组件 / 子系统</td><td><span class="badge warn">中</span></td><td>阻抗与断线监测，异常进入安全待机（SAF-REQ-03）</td>
       </tr>
       <tr>
-        <td><code>RSK-06</code></td><td>患者疲劳、疼痛上升仍继续训练</td><td>主观状态未纳入判断</td><td>二次伤害</td><td><span class="badge warn">中</span></td><td>疲劳 / 疼痛输入触发降载或暂停；告警双通道提醒（SAF-REQ-08）</td>
+        <td><code>RSK-06</code></td><td>患者疲劳、疼痛上升仍继续训练</td><td>主观状态未纳入判断</td><td>二次伤害</td><td>系统</td><td><span class="badge warn">中</span></td><td>疲劳 / 疼痛输入触发降载或暂停；告警双通道提醒（SAF-REQ-08）</td>
       </tr>
       <tr>
-        <td><code>RSK-07</code></td><td>训练原始数据被直接上传</td><td>本地脱敏失效</td><td>隐私泄露</td><td><span class="badge warn">中</span></td><td>原始数据不出本地，云端仅接收脱敏特征（SAF-REQ-06）</td>
+        <td><code>RSK-07</code></td><td>训练原始数据被直接上传</td><td>本地脱敏失效</td><td>隐私泄露</td><td>子系统</td><td><span class="badge warn">中</span></td><td>原始数据不出本地，云端仅接收脱敏特征（SAF-REQ-06）</td>
       </tr>
       <tr>
-        <td><code>RSK-08</code></td><td>训练中断电，外骨骼突然失去支撑</td><td>执行器依赖持续通电保持姿态</td><td>肢体失支撑、部件坠落</td><td><span class="badge warn">中</span></td><td>断电时机械抱闸，锁止在安全姿态（SAF-REQ-07）</td>
+        <td><code>RSK-08</code></td><td>训练中断电，外骨骼突然失去支撑</td><td>执行器依赖持续通电保持姿态</td><td>肢体失支撑、部件坠落</td><td>组件 / 子系统</td><td><span class="badge warn">中</span></td><td>断电时机械抱闸，锁止在安全姿态（SAF-REQ-07）</td>
       </tr>
     </table>
     <p class="note">等级说明：<b>高</b>表示可能造成身体伤害，需硬件级防护；<b>中</b>表示可能造成不适或流程风险，靠监测、降级与流程确认控制。</p>
@@ -290,10 +290,10 @@
   <div class="card">
     <table>
       <tr><th style="width:150px">前序作业</th><th>已确定的内容</th><th>本页如何沿用</th></tr>
-      <tr><td>作业 1 · 层级分解</td><td>任务—体系—整机—系统—子系统—模块的六级结构</td><td>场景要素中的设备与人员，对应分解出的子系统和相关方</td></tr>
-      <tr><td>作业 2 · BRS / StRS</td><td>业务需求、运行概念、相关方矩阵与 15 条可追溯需求</td><td>四层场景与 S1–S3 典型场景直接沿用，未另起设定</td></tr>
-      <tr><td>作业 3 · SyRS / 架构 / STPA</td><td>系统需求、初始架构、UCA 与 SAF-REQ 安全需求</td><td>风险列表的处置措施逐条挂接到对应 SAF-REQ</td></tr>
-      <tr><td><b>作业 4 · 本页</b></td><td>场景分层、场景要素、运行设计条件、典型场景与风险列表</td><td>为后续详细设计和现场试用提供场景与边界依据</td></tr>
+      <tr><td>作业 1 · 层级分解</td><td>任务—体系—整机—系统—子系统—模块的六级结构</td><td>场景按使命 / 系统 / 子系统 / 组件四层对齐分解结果，要素落到对应层级</td></tr>
+      <tr><td>作业 2 · BRS / StRS</td><td>业务需求、运行概念、相关方矩阵与 15 条可追溯需求</td><td>使命层场景沿用既定相关方与 S1–S3 典型场景，不另起设定</td></tr>
+      <tr><td>作业 3 · SyRS / 架构 / STPA</td><td>系统需求、初始架构、UCA 与 SAF-REQ 安全需求</td><td>系统层场景对应系统需求；风险处置逐条挂接到对应 SAF-REQ</td></tr>
+      <tr><td><b>作业 4 · 本页</b></td><td>四层场景分层、场景要素、运行设计条件、典型场景与风险列表</td><td>为后续详细设计和现场试用提供场景与边界依据</td></tr>
     </table>
   </div>
 </section>
@@ -301,7 +301,7 @@
 </div>
 
 <footer>
-  <p>机器增强的人机混合神经系统 · 作业 4：运行场景分层 · 场景要素 · 运行设计条件 · 典型场景 · 风险场景列表</p>
+  <p>机器增强的人机混合神经系统 · 作业 4：场景分层 · 场景要素 · 运行设计条件 · 典型场景 · 风险场景列表</p>
   <p style="margin-top:6px">复杂系统工程 2026 · 小组作业 4</p>
 </footer>
 
